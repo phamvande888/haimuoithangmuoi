@@ -24,7 +24,7 @@ const slides = [
   },
   {
     img: "/images/nhu5.jpg",
-    text: "Chúc Cổ thật nhiều niềm vui 💕.\n    \n  Vậy là món quà nhỏ của ảnh đã kết thúc rồi...Lúc mà cổ thấy món quà này là lúc ảnh đang đi làm đó, cũng đuối nếu mà Cổ đọc tới đây rồi thì hãy gửi ảnh thứ gì đó để nạp năng lượng nha <3",
+    text: "Chúc Cổ thật nhiều niềm vui 💕.\n    \n  Vậy là món quà nhỏ của ảnh đã kết thúc rồi...Lúc mà cổ thấy món quà này là lúc ảnh đang đi làm đó, nếu Cổ đã đọc tới đây rồi thì hãy gửi ảnh thứ gì đó để nạp năng lượng nha <3",
   },
 ];
 
