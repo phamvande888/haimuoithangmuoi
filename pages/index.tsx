@@ -1,115 +1,291 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+"use client";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const slides = [
+  {
+    img: "/images/nhu1.jpg",
+    text: "Xin chào đằng ấy nha, đầu tiên là Ảnh chúc Cổ ngày mới vui vẽ năng lượng nè. Không chỉ riêng 20/10 mà tất cả các ngày còn lại đều là ngày tuyệt vời đối với cổ. \n    \n Lướt sang 👉 để đọc thêm nè",
+  },
+  {
+    img: "/images/nhu3.jpg",
+    text: "Hãy cười thật nhiều nhé, vì nụ cười của Cổ làm cả thế giới dịu lại❤️. Mỗi lần nhìn thấy Cổ cười là như được nạp đầy năng lượng vậy đó. Ảnh mong cổ sẽ luôn vui vẽ hồn nhiên như vậy. ",
+  },
+  {
+    img: "/images/nhu2.jpg",
+    text: "Cổ là người mang năng lượng vui tươi, làm mọi thứ xung quanh bừng sáng. Chúc Cổ luôn được yêu thương và bình an, mỗi ngày đều thật đặc biệt....🌺",
+  },
+  {
+    img: "/images/nhu4.jpg",
+    text: "Mỗi bước chân Cổ đi qua đều để lại những vết hạnh phúc nho nhỏ, gieo niềm vui cho những ai may mắn gặp Cổ. Dẫu thế gian có muôn ngàn màu sắc, năng lượng và lòng tử tế của Cổ luôn khiến mọi thứ trở nên rực rỡ hơn.",
+  },
+  {
+    img: "/images/nhu5.jpg",
+    text: "Chúc Cổ thật nhiều niềm vui 💕.\n    \n  Vậy là món quà nhỏ của ảnh đã kết thúc rồi...Lúc mà cổ thấy món quà này là lúc ảnh đang đi làm đó, cũng đuối nếu mà Cổ đọc tới đây rồi thì hãy gửi ảnh thứ gì đó để nạp năng lượng nha <3",
+  },
+];
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+export default function Card2010() {
+  const [phase, setPhase] = useState("intro");
+  const [displayedText, setDisplayedText] = useState("");
+  const [showLetter, setShowLetter] = useState(false);
+  const [floaties, setFloaties] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(true);
 
-export default function Home() {
+  const fullText = ` Nhân ngày Phụ nữ Việt Nam \n Ảnh có một vài lời muốn gửi đến cho Cổ... Nhấn vào icon lá thư để xem tiếp nha!`;
+  // 💕 Sinh hiệu ứng bong bóng & trái tim
+  useEffect(() => {
+    const arr = [...Array(25)].map((_, i) => ({
+      id: i,
+      size: 18 + Math.random() * 24,
+      startX: Math.random() * 100,
+      endX: Math.random() * 100,
+      duration: 15 + Math.random() * 12,
+      delay: Math.random() * 8,
+      isHeart: Math.random() > 0.4,
+    }));
+    setFloaties(arr);
+  }, []);
+
+  // ✨ Hiệu ứng gõ chữ
+  useEffect(() => {
+    if (phase === "intro") {
+      setDisplayedText("");
+      setShowLetter(false);
+      let i = 0;
+      const interval = setInterval(() => {
+        setDisplayedText(fullText.slice(0, i + 1));
+        i++;
+        if (i === fullText.length) {
+          clearInterval(interval);
+          setTimeout(() => setShowLetter(true), 800);
+        }
+      }, 80);
+      return () => clearInterval(interval);
+    }
+  }, [phase]);
+
+  const handleLetterClick = () => {
+    const audio = document.getElementById("bgm");
+    if (audio && audio.paused) {
+      audio.play().catch(() => {});
+      setIsPlaying(true);
+    }
+    setPhase("card");
+  };
+
+  const toggleMusic = () => {
+    const audio = document.getElementById("bgm");
+    if (!audio) return;
+    if (audio.paused) {
+      audio.play();
+      setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    swipe: true,
+    autoplay: false,
+  };
+
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              pages/index.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="relative min-h-screen flex items-center justify-center overflow-hidden p-6">
+      {/* 🌸 Nền gradient chuyển động */}
+      <div className="absolute inset-0 bg-gradient-to-br from-rose-100 via-pink-200 to-rose-300 animate-gradientMove bg-[length:200%_200%] z-0"></div>
+
+      {/* 💕 Hiệu ứng bong bóng & trái tim */}
+      {typeof window !== "undefined" && floaties.length > 0 && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          {floaties.map((f) => (
+            <motion.div
+              key={f.id}
+              className="absolute"
+              style={{
+                left: `${f.startX}%`,
+                bottom: `${Math.random() * 30 - 10}%`,
+                fontSize: `${f.size}px`,
+              }}
+              initial={{ opacity: 0, y: "100vh" }}
+              animate={{
+                y: ["100vh", "-20vh"],
+                x: [`${f.startX}%`, `${f.endX}%`],
+                opacity: [0, 0.8, 0.6, 0],
+                rotate: [0, f.isHeart ? 12 : -12, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: f.duration,
+                delay: f.delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <span
+                className={`${
+                  f.isHeart ? "text-rose-400/80" : "text-pink-200/70"
+                } drop-shadow-md`}
+              >
+                {f.isHeart ? "❤️" : "🎈"}
+              </span>
+            </motion.div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      )}
+
+      {/* 🔊 Nút bật/tắt nhạc */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        onClick={toggleMusic}
+        className="fixed bottom-6 right-6 z-50 bg-white/70 border border-rose-300 rounded-full p-3 shadow-md hover:scale-110 transition
+             flex items-center justify-center min-w-[3rem] max-w-[3rem]"
+      >
+        {isPlaying ? "🔊" : "🔈"}
+      </motion.button>
+
+      <audio id="bgm" src="/music/2010.mp3" loop preload="auto" />
+
+      <AnimatePresence mode="wait">
+        {/* 🌷 Giao diện intro */}
+        {phase === "intro" && (
+          <motion.div
+            key="intro"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, y: -40 }}
+            transition={{ duration: 1 }}
+            className="text-center space-y-6 relative z-10"
+          >
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 1 }}
+              className="text-6xl font-extrabold text-rose-600 drop-shadow-sm"
+            >
+              20 / 10
+            </motion.h1>
+
+            <p className="text-rose-800/80 text-lg max-w-md mx-auto min-h-[3rem] font-medium whitespace-pre-line">
+              {displayedText}
+              <span className="animate-pulse text-rose-600">▍</span>
+            </p>
+
+            {showLetter && (
+              <motion.div
+                onClick={handleLetterClick} // ✨ click phát nhạc
+                initial={{ opacity: 0, y: 80, scale: 0.8 }}
+                animate={{
+                  opacity: 1,
+                  y: [0, -8, 0],
+                  scale: [1, 1.05, 1],
+                  boxShadow: [
+                    "0 0 0px rgba(255, 182, 193, 0.4)",
+                    "0 0 12px rgba(255, 182, 193, 0.8)",
+                    "0 0 0px rgba(255, 182, 193, 0.4)",
+                  ],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="flex justify-center mt-10 cursor-pointer relative z-10"
+              >
+                <motion.div
+                  whileHover={{ scale: 1.15, rotate: 3 }}
+                  transition={{ type: "spring", stiffness: 150 }}
+                  className="w-16 h-16 bg-white/80 backdrop-blur-md border border-rose-300 rounded-xl flex items-center justify-center shadow-lg"
+                >
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.5, type: "spring" }}
+                    className="text-3xl"
+                  >
+                    💌
+                  </motion.span>
+                </motion.div>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+
+        {/* 💌 Giao diện thiệp */}
+        {phase === "card" && (
+          <motion.div
+            key="card"
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="w-full max-w-md bg-gradient-to-br from-white/85 via-rose-50/60 to-rose-100/50 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden border border-rose-200/60 relative z-10"
+          >
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-rose-700 text-center mb-4">
+                🌸 Gửi Tố Như 🌸
+              </h2>
+
+              <div className="rounded-xl overflow-hidden ring-1 ring-rose-100">
+                <Slider {...sliderSettings}>
+                  {slides.map((item, i) => (
+                    <div key={i} className="pb-8">
+                      <img
+                        src={item.img}
+                        alt={`Ảnh ${i + 1}`}
+                        className="w-full h-64 object-cover"
+                      />
+                      <p className="mt-4 text-rose-700/90 text-center text-base leading-relaxed px-4">
+                        {item.text}
+                      </p>
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+
+              <div className="mt-6 flex justify-center">
+                <button
+                  onClick={() => setPhase("intro")}
+                  className="px-5 py-2 rounded-lg border border-rose-300 text-rose-600 font-medium hover:bg-rose-50 transition"
+                >
+                  Xem lại 💫
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 🎨 Hiệu ứng gradient nền */}
+      <style jsx global>{`
+        @keyframes gradientMove {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        .animate-gradientMove {
+          background-size: 200% 200%;
+          animation: gradientMove 10s ease infinite;
+        }
+      `}</style>
+    </main>
   );
 }
